@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Happy Anniversary, Chloe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#e8b4c4;--cream:#f7e9e4;--glass:rgba(255,235,240,.07);--line:rgba(232,180,196,.28)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:radial-gradient(120% 90% at 50% 0,#5c3a5a 0,#2b1731 55%,#1b1020 100%) fixed;color:var(--cream);font:500 1.15rem/1.7 'Cormorant Garamond',Georgia,serif;overflow:hidden}
+#stars,#fl{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.fl{position:absolute;bottom:-40px;color:var(--rose);opacity:0;animation:rise linear infinite}
+@keyframes rise{10%{opacity:.35}to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+.screen{position:fixed;inset:0;display:none;overflow-y:auto;padding:max(20px,env(safe-area-inset-top)) 18px max(20px,env(safe-area-inset-bottom))}
+.screen.on{display:block;animation:in 1s ease both}
+@keyframes in{from{opacity:0}}
+.in{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1rem;position:relative}
+h1,h2{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:600;line-height:1.15;text-shadow:0 0 30px rgba(232,180,196,.35)}
+h1{font-size:clamp(2.3rem,9vw,4.6rem)}
+h2{font-size:clamp(1.8rem,6vw,2.8rem)}
+small,.sub{font-style:italic;color:var(--rose);letter-spacing:.04em}
+button{font:inherit;font-size:1rem;color:var(--cream);background:var(--glass);border:1px solid var(--line);border-radius:99px;padding:.6rem 1.6rem;cursor:pointer;backdrop-filter:blur(6px);transition:background .25s,transform .25s}
+button:hover{background:rgba(232,180,196,.2);transform:translateY(-2px)}
+button:focus-visible,input:focus-visible,video:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:1.6rem;backdrop-filter:blur(10px);width:min(92vw,620px)}
+/* countdown */
+.boxes{display:flex;gap:clamp(8px,3vw,18px);margin-top:.8rem}
+.box{width:clamp(66px,19vw,96px);padding:.9rem 0 .6rem;background:var(--glass);border:1px solid var(--line);border-radius:16px}
+.box b{display:block;font:600 clamp(1.8rem,7vw,2.6rem)/1.1 'Playfair Display',serif}
+.box small{font-size:.85rem}
+/* gift */
+#gift{font-size:5.5rem;background:none;border:0;animation:pulse 2.2s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(232,180,196,.6))}
+#gift.open{animation:shake .6s}
+@keyframes pulse{50%{transform:scale(1.1)}}
+@keyframes shake{25%{transform:rotate(-10deg) scale(1.2)}75%{transform:rotate(10deg) scale(1.3)}}
+/* polaroids */
+.pol{position:relative;background:#f8f1ec;padding:7px 7px 26px;border-radius:3px;box-shadow:0 10px 26px rgba(0,0,0,.45);transform:rotate(var(--r));aspect-ratio:4/5;overflow:hidden}
+.pol::before{content:"♥";position:absolute;inset:7px 7px 26px;display:grid;place-items:center;background:linear-gradient(135deg,#7a4f78,#d9a0b4);color:rgba(255,255,255,.7);font-size:2rem}
+.pol img{position:absolute;inset:7px 7px 26px;width:calc(100% - 14px);height:calc(100% - 33px);object-fit:cover}
+.corner{position:absolute;width:clamp(64px,17vw,120px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:18px;width:min(94vw,860px);padding:14px}
+/* songs */
+.song{display:flex;align-items:center;gap:.9rem;text-align:left;padding:.55rem 0;border-bottom:1px solid var(--line)}
+.song:last-child{border:0}
+.song button{width:42px;height:42px;padding:0;flex:none;border-radius:50%}
+.song.on b{color:var(--rose)}
+.song b{display:block;font:600 1.1rem 'Playfair Display',serif;font-style:italic}
+#seek{width:100%;accent-color:var(--rose);margin-top:.8rem}
+video{width:min(92vw,560px);max-height:62vh;border-radius:16px;border:1px solid var(--line);background:#000}
+.cur{border-right:2px solid var(--rose);animation:blink .8s step-end infinite}
+@keyframes blink{50%{border-color:transparent}}
+#letter{white-space:pre-wrap;text-align:left;min-height:11rem;font-size:1.2rem}
+.hid{visibility:hidden}
+#hearts{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:min(92vw,420px)}
+#hearts button{padding:.55rem 0;font-size:1.4rem;border-radius:14px}
+#hearts button.seen{background:rgba(232,180,196,.32);color:#fff}
+#reason{min-height:5rem;font-size:1.3rem;font-style:italic;display:flex;align-items:center;justify-content:center}
+#no{transition:transform .25s}
+.burst{position:fixed;left:50%;top:55%;color:var(--rose);pointer-events:none;animation:burst 1.6s ease-out forwards}
+@keyframes burst{to{transform:translate(var(--x),var(--y)) scale(1.5);opacity:0}}
+audio{width:min(92vw,420px);accent-color:var(--rose)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas><div id="fl"></div>
+
+<section class="screen" id="s-count"><div class="in">
+  <small>counting down the days</small>
+  <h1>Our Anniversary<br>is Coming</h1>
+  <p class="sub">Something beautiful is waiting for you, Chloe.</p>
+  <div class="boxes" aria-live="off">
+    <div class="box"><b id="d">00</b><small>days</small></div>
+    <div class="box"><b id="h">00</b><small>hours</small></div>
+    <div class="box"><b id="m">00</b><small>minutes</small></div>
+    <div class="box"><b id="s">00</b><small>seconds</small></div>
+  </div>
+</div></section>
+
+<section class="screen" id="s-gift"><div class="in">
+  <small>there's something for you</small>
+  <button id="gift" aria-label="Open your gift">🎁</button>
+  <p class="sub">Tap to open</p>
+</div></section>
+
+<section class="screen" id="s-hero"><div class="in">
+  <div id="corners"></div>
+  <small>a love letter for you</small>
+  <h1>Happy Anniversary,<br>Chloe</h1>
+  <p class="sub">Made with love, just for you</p>
+  <button data-go="s-letter">Read my letter</button>
+</div></section>
+
+<section class="screen" id="s-letter"><div class="in">
+  <h2>My Letter to You</h2>
+  <div class="card"><p id="letter"></p></div>
+  <button data-go="s-gallery" id="l-next" class="hid">Our memories</button>
+</div></section>
+
+<section class="screen" id="s-gallery"><div class="in">
+  <h2>Our Memories</h2>
+  <div class="grid" id="grid"></div>
+  <button data-go="s-songs">Songs that remind me of you</button>
+</div></section>
+
+<section class="screen" id="s-songs"><div class="in">
+  <h2>Songs That Remind Me of You</h2>
+  <div class="card">
+    <div id="list"></div>
+    <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Seek">
+  </div>
+  <button data-go="s-video">A moment for you</button>
+</div></section>
+
+<section class="screen" id="s-video"><div class="in">
+  <h2>A Moment For You</h2>
+  <small>a special video message</small>
+  <div id="vids" style="display:flex;flex-direction:column;gap:1.2rem;align-items:center"></div>
+  <button data-go="s-voice">A voice note for you</button>
+</div></section>
+
+<section class="screen" id="s-voice"><div class="in">
+  <h2>Just For Your Ears</h2>
+  <small>a voice note from me</small>
+  <audio id="vo" controls preload="metadata"></audio>
+  <button data-go="s-reasons">Reasons I love you</button>
+</div></section>
+
+<section class="screen" id="s-reasons"><div class="in">
+  <h2>Reasons I Love You</h2>
+  <small>tap each heart</small>
+  <div id="hearts"></div>
+  <div class="card" id="reason">♥</div>
+  <button data-go="s-q">Continue</button>
+</div></section>
+
+<section class="screen" id="s-q"><div class="in">
+  <h1>Will you keep<br>choosing me?</h1>
+  <p class="sub">Every day, for as long as we can.</p>
+  <div style="display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;min-height:60px">
+    <button id="yes">Yes, always 🤍</button><button id="no">Let me think</button>
+  </div>
+  <p id="ans" class="hid" style="font-size:1.4rem">I knew it. I love you, Chloe. 🤍</p>
+  <button data-go="s-end" id="q-next" class="hid">Continue</button>
+</div></section>
+
+<section class="screen" id="s-end"><div class="in">
+  <h1 id="close"></h1>
+  <p class="sub" id="together"></p>
+  <p class="sub">Thank you for being part of my life.<br>Happy Anniversary, Chloe.</p>
+  <p style="font-size:1.4rem">Forever yours, ♥</p>
+  <button data-go="s-hero">Replay from start</button>
+</div></section>
+
+<script>
+/* ===== EDIT THIS PART ===== */
+const CFG={
+  date:"2026-10-21T00:00:00",               // anniversary (your local time)
+  letter:`Happy Anniversary, my love 🤍
+
+Chloe, I don't even know where to start, because there's so much I want you to know.
+
+First of all, you are so beautiful. Not just the way you look, although I get lost in it every single time, but the way you carry yourself, the way you smile, the way your whole presence makes a room feel warmer. You are the most beautiful person I have ever known, inside and out.
+
+Every day, I fall deeper and deeper in love with you. I thought I already knew what love felt like, but you keep showing me that it can grow even more. Every morning I wake up and somehow my heart has found a new reason to love you more than the day before.
+
+My life has been so much better since I met you. You came in and made everything brighter, softer, and more meaningful. The good days feel even better with you in them, and the hard days feel so much lighter when I know I have you.
+
+Thank you for being patient with me, for believing in me, and for loving me the way you do. Thank you for every laugh, every quiet moment, and every time you made an ordinary day feel like something special.
+
+I'm so proud of you, and so grateful that I get to be the one standing next to you. I promise to keep choosing you, to keep making you smile, and to keep loving you more with every passing day.
+
+You are my favorite person, my safe place, and my best thing that ever happened to me.
+
+Happy Anniversary, my love. I love you so much, Chloe. Today, tomorrow, and always. 🤍`,
+  photos:["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg"],
+  songs:[
+    {title:"Heaven",artist:"Bryan Adams",file:"song1.mp3",start:42},
+    {title:"Won't Let Go",artist:"Juice WRLD",file:"song2.mp3",start:46},
+    {title:"Can't Help Falling in Love",artist:"Elvis Presley",file:"song3.mp3"}   // start = seconds to begin from; add more songs like this
+  ],
+  videos:["moment1.mp4","moment2.mp4"],   // add or remove as many as you want
+  closing:"With All My Love",
+  since:"2026-08-21T00:00:00",              // day you got together
+  voice:"",                                  // e.g. "voicenote.mp3" (leave empty to skip the voice note screen)
+  reasons:[
+    "Your smile makes my whole day better.",
+    "You are so beautiful, inside and out.",
+    "You make ordinary days feel special.",
+    "You're patient with me.",
+    "You believe in me.",
+    "Every day I fall a little deeper for you.",
+    "My life has been so much better since I met you.",
+    "You feel like my safe place.",
+    "You make the hard days feel lighter.",
+    "Because it's you, and it will always be you."
+  ]
+};
+/* ========================== */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let typing;
+function go(id){
+  if(id==='s-voice'&&!CFG.voice)id='s-reasons';
+  $$('.screen').forEach(e=>e.classList.toggle('on',e.id===id));$('#'+id).scrollTop=0;
+  clearInterval(typing);au.pause();vo.pause();vids().forEach(v=>v.pause());
+  if(id==='s-q'){$('#ans').classList.add('hid');$('#q-next').classList.add('hid');$('#yes').style.display='';$('#no').style.display='';$('#no').style.transform=''}
+  if(id==='s-end'){const n=Math.floor((Date.now()-new Date(CFG.since))/864e5);$('#together').textContent=n>=0?`We've been together for ${n} day${n===1?'':'s'} 🤍`:''}
+  if(id==='s-letter')type($('#letter'),CFG.letter,22,()=>$('#l-next').classList.remove('hid'));
+  if(id==='s-end')type($('#close'),CFG.closing,90,()=>$('#close').classList.remove('cur'),true);
+}
+function type(el,text,ms,done,caret){
+  el.textContent='';$('#l-next').classList.add('hid');let i=0;if(caret)el.classList.add('cur');
+  const fin=()=>{clearInterval(typing);el.textContent=text;done&&done()};
+  typing=setInterval(()=>{el.textContent=text.slice(0,++i);if(i>=text.length)fin()},ms);
+  el.onclick=fin;
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(t)go(t.dataset.go)});
+const pol=(src,i)=>`<figure class="pol" style="--r:${(i*37)%9-4}deg"><img src="${src}" alt="Photo ${i+1}" loading="lazy" onerror="this.remove()"></figure>`;
+$('#grid').innerHTML=CFG.photos.map(pol).join('');
+const pos=['left:3%;top:5%','right:3%;top:9%','left:4%;bottom:7%','right:4%;bottom:5%'];
+$('#corners').innerHTML=pos.map((p,i)=>pol(CFG.photos[i],i).replace('class="pol"',`class="pol corner" `).replace('style="',`style="${p};position:absolute;`)).join('');
+/* songs */
+const au=new Audio(),vo=$('#vo');let cur=-1;if(CFG.voice)vo.src=CFG.voice;
+vo.onplay=()=>{au.pause();vids().forEach(v=>v.pause())};
+$('#vids').innerHTML=CFG.videos.map(v=>`<video controls playsinline preload="metadata" src="${v}"></video>`).join('');
+const vids=()=>$$('#vids video');
+vids().forEach(v=>v.onplay=()=>{au.pause();vo.pause();vids().forEach(o=>o!==v&&o.pause())});
+$('#list').innerHTML=CFG.songs.map((s,i)=>`<div class="song" id="song${i}"><button data-i="${i}" aria-label="Play ${s.title}">▶</button><div><b>${s.title}</b><small>${s.artist}</small></div></div>`).join('');
+function play(i){if(cur===i){au.paused?au.play():au.pause();return}cur=i;au.src=CFG.songs[i].file;au.onloadedmetadata=()=>{au.currentTime=CFG.songs[i].start||0};au.play().catch(()=>{})}
+$('#list').onclick=e=>{const b=e.target.closest('button');if(b)play(+b.dataset.i)};
+const ui=()=>CFG.songs.forEach((_,i)=>{$('#song'+i).classList.toggle('on',i===cur);$('#song'+i+' button').textContent=i===cur&&!au.paused?'❚❚':'▶'});
+au.onplay=()=>{vo.pause();vids().forEach(v=>v.pause());ui()};au.onpause=ui;
+au.onended=()=>{const n=(cur+1)%CFG.songs.length;cur=-1;play(n)};
+au.ontimeupdate=()=>{if(au.duration)$('#seek').value=au.currentTime/au.duration*100};
+$('#seek').oninput=e=>{if(au.duration)au.currentTime=e.target.value/100*au.duration};
+/* countdown */
+$('#hearts').innerHTML=CFG.reasons.map((r,i)=>`<button data-r="${i}" aria-label="Reason ${i+1}">♥</button>`).join('');
+$('#hearts').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.classList.add('seen');$('#reason').textContent=CFG.reasons[b.dataset.r]};
+$('#no').onpointerenter=$('#no').onclick=()=>{$('#no').style.transform=`translate(${Math.random()*160-80}px,${Math.random()*120-60}px)`};
+$('#yes').onclick=()=>{
+  for(let i=0;i<30;i++){const h=document.createElement('span');h.className='burst';h.textContent='♥';
+    h.style.cssText=`--x:${Math.random()*500-250}px;--y:${-Math.random()*420-60}px;font-size:${14+Math.random()*22}px`;document.body.appendChild(h);setTimeout(()=>h.remove(),1700)}
+  $('#yes').style.display=$('#no').style.display='none';$('#ans').classList.remove('hid');$('#q-next').classList.remove('hid')};
+const T=new Date(CFG.date).getTime(),p2=n=>String(n).padStart(2,'0');
+function tick(){
+  const l=T-Date.now();
+  if(l<=0){if($('#s-count').classList.contains('on'))go('s-gift');return}
+  $('#d').textContent=p2(Math.floor(l/864e5));$('#h').textContent=p2(Math.floor(l/36e5%24));
+  $('#m').textContent=p2(Math.floor(l/6e4%60));$('#s').textContent=p2(Math.floor(l/1e3%60));
+}
+tick();setInterval(tick,1000);
+const unlocked=Date.now()>=T||/[?&]open/.test(location.search);
+go(unlocked?'s-gift':'s-count');
+$('#gift').onclick=e=>{e.currentTarget.classList.add('open');setTimeout(()=>go('s-hero'),700)};
+/* ambience */
+$('#fl').innerHTML=Array.from({length:14},()=>`<span class="fl" style="left:${Math.random()*100}%;font-size:${10+Math.random()*16}px;animation-duration:${9+Math.random()*10}s;animation-delay:${-Math.random()*14}s">♥</span>`).join('');
+const cv=$('#stars'),c=cv.getContext('2d');let S=[];
+function size(){cv.width=innerWidth;cv.height=innerHeight;S=Array.from({length:90},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.4+.3,p:Math.random()*6}))}
+size();addEventListener('resize',size);
+(function draw(t){c.clearRect(0,0,cv.width,cv.height);S.forEach(s=>{c.globalAlpha=.25+.5*Math.abs(Math.sin(t/1500+s.p));c.fillStyle='#fff';c.beginPath();c.arc(s.x,s.y,s.r,0,7);c.fill()});requestAnimationFrame(draw)})(0);
+</script>
+</body>
+</html>
